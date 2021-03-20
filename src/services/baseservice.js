@@ -1,22 +1,25 @@
 import api from '../env/apiconfig';
 
-'https://northwind.now.sh' + '/api/category'
 let apiurl = api.testurl;
 
 const baseservice = {
 
-    get: (url) => {
-        fetch(`${apiurl}${url}`)
+    get: async (url) => {
+        let result;
+        await fetch(`${apiurl}${url}`)
             .then((res) => res.json())
             .then((data) => {
-                return data;
+                result = data;
             })
             .catch((err) => {
                 //error loglanabilir
                 console.log(err);
-            })
+            });
+
+        return result;
     },
-    post: (url, data) => {
+    post: async (url, data) => {
+        let result;
 
         let requestoptions = {
             method: 'POST',
@@ -27,11 +30,13 @@ const baseservice = {
             body: JSON.stringify(data)
         };
 
-        fetch(`${apiurl}${url}`, requestoptions)
+        await fetch(`${apiurl}${url}`, requestoptions)
             .then((res) => res.json())
             .then((data) => {
-                return data;
-            })
+                result = data;
+            });
+
+        return result;
     },
     put: (url, data) => {
         let requestoptions = {
@@ -49,7 +54,8 @@ const baseservice = {
                 return data;
             })
     },
-    delete: (url) => {
+    delete: async (url) => {
+        let result;
         let requestoptions = {
             method: 'DELETE',
             headers: {
@@ -58,11 +64,16 @@ const baseservice = {
             }
         };
 
-        fetch(`${apiurl}${url}`, requestoptions)
+        await fetch(`${apiurl}${url}`, requestoptions)
             .then((res) => res.json())
             .then((data) => {
-                return data;
+                result = data;
             })
+            .catch((err) => {
+                console.log(err);
+            })
+
+        return result;
     }
 
 }
